@@ -74,7 +74,7 @@ sys.exit(0 if r.getcode()==200 else 1)"]
       SMTP_SERVER: smtp.gmail.com
       SMTP_PORT: 587
       SMTP_USER: malayankumar@gmail.com
-      SMTP_PASS: "ywsm ccjp idgg qknq"
+      SMTP_PASS: <give your app id>
       FROM_EMAIL: malayankumar@gmail.com
       PYTHONUNBUFFERED: "1"
     ports:
