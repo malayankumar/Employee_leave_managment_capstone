@@ -1,0 +1,21 @@
+<app-navbar></app-navbar>
+<div class="container card mb-3" style="background-color: #fff; margin-top: 10px; padding-bottom: 5px; padding-top: 5px;">
+  <h3>Register Employee</h3>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input class="form-control" formControlName="name" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input class="form-control" formControlName="email" type="email" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Temp Password</label>
+      <input class="form-control" formControlName="password" type="password" />
+    </div>
+    <button class="btn btn-primary" [disabled]="saving || form.invalid">Create</button>
+    <span class="ms-3" *ngIf="msg">{{ msg }}</span>
+    <span class="ms-3" *ngIf="err">{{ err }}</span>
+  </form>
+</div>

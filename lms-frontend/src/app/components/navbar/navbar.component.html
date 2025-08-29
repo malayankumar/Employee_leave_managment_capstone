@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/dashboard">LMS</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="mainNav" class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard">Dashboard</a>
+        </li>
+
+        <!-- employee-only -->
+        <li class="nav-item" *ngIf="role==='EMPLOYEE'">
+          <a class="nav-link" routerLink="/request">Request Leave</a>
+        </li>
+        <li class="nav-item" *ngIf="role==='EMPLOYEE'">
+          <a class="nav-link" routerLink="/my-leaves">My Leaves</a>
+        </li>
+
+        <!-- manager-only -->
+         <li class="nav-item" *ngIf="role==='MANAGER'">
+          <a class="nav-link" routerLink="/request">Request Leave</a>
+        </li>
+        <li class="nav-item" *ngIf="role==='MANAGER'">
+          <a class="nav-link" routerLink="/my-leaves">My Leaves</a>
+        </li>
+        <li class="nav-item" *ngIf="role==='MANAGER'">
+          <a class="nav-link" routerLink="/approvals">Approvals</a>
+        </li>
+        <li class="nav-item" *ngIf="role==='MANAGER'">
+          <a class="nav-link" routerLink="/register-employee">Register Employee</a>
+        </li>
+      </ul>
+
+      <span class="navbar-text me-3">Hi, {{ name }}</span>
+      <button class="btn btn-outline-light btn-sm" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</nav>

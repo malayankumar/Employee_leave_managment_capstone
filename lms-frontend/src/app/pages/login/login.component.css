@@ -1,0 +1,6 @@
+* {background-image: -webkit-image-set();}
+.container { max-width: 420px; }
+.card { border-radius: 16px; }
+.card h4 { font-weight: 700; }
+.form-text { color: #6b7280; }
+.text-danger { font-size: .9rem; }

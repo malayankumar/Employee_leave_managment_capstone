@@ -1,0 +1,33 @@
+<app-navbar></app-navbar>
+<div class="container py-4">
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="card p-3 shadow-sm">
+        <h5>Request Leave</h5>
+        <p>Create a new leave request.</p>
+        <a routerLink="/request" class="btn btn-primary btn-sm">Open</a>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-3 shadow-sm">
+        <h5>My Leaves</h5>
+        <p>Track your requests & status.</p>
+        <a routerLink="/my-leaves" class="btn btn-primary btn-sm">Open</a>
+      </div>
+    </div>
+    <div class="col-md-4" *ngIf="role==='MANAGER'">
+      <div class="card p-3 shadow-sm">
+        <h5>Approvals</h5>
+        <p>Approve or reject pending leaves.</p>
+        <a routerLink="/approvals" class="btn btn-primary btn-sm">Open</a>
+      </div>
+    </div>
+    <div class="col-md-4" *ngIf="role==='MANAGER'">
+      <div class="card p-3 shadow-sm">
+        <h5>Register Employee</h5>
+        <p>Create a new Employee.</p>
+        <a routerLink="/register-employee" class="btn btn-primary btn-sm">Open</a>
+      </div>
+    </div>
+  </div>
+</div>

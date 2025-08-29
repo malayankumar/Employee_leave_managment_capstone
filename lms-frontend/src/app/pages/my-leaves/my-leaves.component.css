@@ -1,0 +1,3 @@
+h5 { font-weight: 700; background-color: #fff; }
+.table { background: #ffffff; border-radius: var(--radius); overflow: hidden;  }
+.table tbody tr:hover { background: #f9fafb; }

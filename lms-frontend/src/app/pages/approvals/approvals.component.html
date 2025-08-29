@@ -1,0 +1,99 @@
+<app-navbar></app-navbar>
+<div class="container card" style="background-color: #fff; margin-top: 10px;">
+  <h2>Pending Approvals</h2>
+
+  <div *ngIf="loading">Loading...</div>
+  <table class="table" *ngIf="!loading && rows.length">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Employee</th>
+        <th>Type</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Reason</th>
+        <th>Remark</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of rows">
+        <td>{{ r.id }}</td>
+        <td>{{ r.employee_name }}</td>
+        <td>{{ r.type }}</td>
+        <td>{{ r.start_date }}</td>
+        <td>{{ r.end_date }}</td>
+        <td>{{ r.reason || '-' }}</td>
+        <td>
+          <input class="form-control" [(ngModel)]="r._remark" placeholder="Optional remark" />
+        </td>
+        <td>
+          <button class="btn btn-success btn-sm" (click)="approve(r.id, r._remark)" [disabled]="acting.has(r.id)"
+            style="margin-right: 5px;">Approve</button>
+          <button class="btn btn-danger btn-sm" (click)="reject(r.id, r._remark)"
+            [disabled]="acting.has(r.id)">Reject</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && !rows.length">No pending requests.</div>
+</div>
+<div class="container mt-3">
+  <div class="card shadow-sm">
+    <div class="card-body d-flex align-items-center gap-2 flex-wrap">
+      <button class="btn btn-outline-primary me-3" (click)="toggleBalances()">
+        {{ showBalances ? 'Hide Balances' : 'View Balances' }}
+      </button>
+
+      <label for="year" class="mb-0 me-2">Year:</label>
+      <input
+        id="year"
+        type="number"
+        [(ngModel)]="year"
+        (change)="onYearChange()"
+        class="form-control w-auto"
+        style="width:120px"
+      />
+    </div>
+  </div>
+</div>
+
+<div class="container card" style="background-color: #fff; margin-top: 10px; padding-top: 5px;" *ngIf="showBalances">
+  <table class="table table-bordered table-sm">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Allowed</th>
+        <th>Taken</th>
+        <th>Remaining</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let r of balances">
+        <tr>
+          <td rowspan="3">{{ r.user_id }}</td>
+          <td rowspan="3">{{ r.name || '-' }}</td>
+          <td>MEDICAL</td>
+          <td>{{ r.balances?.MEDICAL?.allowed }}</td>
+          <td>{{ r.balances?.MEDICAL?.taken }}</td>
+          <td>{{ r.balances?.MEDICAL?.remaining }}</td>
+        </tr>
+        <tr>
+          <td>SICK</td>
+          <td>{{ r.balances?.SICK?.allowed }}</td>
+          <td>{{ r.balances?.SICK?.taken }}</td>
+          <td>{{ r.balances?.SICK?.remaining }}</td>
+        </tr>
+        <tr>
+          <td>PRIVILEGED</td>
+          <td>{{ r.balances?.PRIVILEGED?.allowed }}</td>
+          <td>{{ r.balances?.PRIVILEGED?.taken }}</td>
+          <td>{{ r.balances?.PRIVILEGED?.remaining }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

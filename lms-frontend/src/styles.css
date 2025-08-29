@@ -1,0 +1,67 @@
+/* Theme */
+:root{
+  --bg: #f7f7fb;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --primary: #2563eb;
+  --primary-600:#1d4ed8;
+  --success:#16a34a;
+  --danger:#dc2626;
+  --warning:#f59e0b;
+  --radius: 12px;
+}
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('/assets/background.jpg'); /* put your image in src/assets/ */
+  background-size: cover;      /* makes it cover entire screen */
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* stays fixed while scrolling */
+  background-position: center;
+}
+
+
+
+/* Cards */
+.card {
+  border: none;
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+}
+.card:hover { box-shadow: 0 6px 18px rgba(0,0,0,.10); }
+
+/* Buttons (slightly stronger primary) */
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+.btn-primary:hover {
+  background-color: var(--primary-600);
+  border-color: var(--primary-600);
+}
+
+/* Tables */
+.table thead th {
+  background: #f3f4f6;
+  border-bottom: 0;
+}
+.table td, .table th { vertical-align: middle; }
+
+/* Status pill (use with <span class="badge-status ...">Approved</span>) */
+.badge-status {
+  display: inline-block;
+  padding: .35rem .6rem;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 600;
+}
+.badge-approved { background: rgba(22,163,74,.12); color: var(--success); }
+.badge-rejected { background: rgba(220,38,38,.12); color: var(--danger); }
+.badge-pending  { background: rgba(245,158,11,.12); color: var(--warning); }
+
+/* Spacing helpers */
+.page { padding: 1.5rem 0; }

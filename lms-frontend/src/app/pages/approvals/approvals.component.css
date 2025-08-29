@@ -1,0 +1,5 @@
+/* .container{width: 100%;} */
+h5 { font-weight: 700; }
+.table { background: #fff; overflow: hidden; }
+.table tbody tr:hover { background: #f9fafb; }
+.btn-success.btn-sm, .btn-danger.btn-sm { border-radius: 999px; padding: .35rem .75rem; }

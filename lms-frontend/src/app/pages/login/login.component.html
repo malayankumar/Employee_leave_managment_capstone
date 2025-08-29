@@ -1,0 +1,46 @@
+<div class="container" style="max-width:420px;margin-top:100px;">
+  <div class="card p-4 shadow">
+    <h4 class="mb-3 text-center">Login</h4>
+
+    <form #f="ngForm" (ngSubmit)="submit()">
+      <div class="mb-3">
+        <label>Email</label>
+        <input type="email"
+               class="form-control"
+               name="email"
+               [(ngModel)]="email"
+               #emailCtrl="ngModel"
+               required
+               email
+               pattern="[A-Za-z0-9._%+\-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
+               inputmode="email"
+               autocomplete="username"
+               [ngClass]="{
+                 'is-invalid': emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched),
+                 'is-valid': emailCtrl.valid && (emailCtrl.dirty || emailCtrl.touched)
+               }"/>
+
+        <div class="invalid-feedback" *ngIf="emailCtrl.errors && (emailCtrl.dirty || emailCtrl.touched)">
+          <span *ngIf="emailCtrl.errors['required']">Email is required.</span>
+          <span *ngIf="emailCtrl.errors['email']">Enter a valid email address.</span>
+          <span *ngIf="emailCtrl.errors['pattern']">Format looks wrong (e.g., name@example.com).</span>
+        </div>
+        <div class="form-text">Try <code>manager@example.com</code> or <code>employee@example.com</code></div>
+      </div>
+
+      <div class="mb-3">
+        <label>Password</label>
+        <input type="password"
+               class="form-control"
+               name="password"
+               [(ngModel)]="password"
+               required
+               autocomplete="current-password"/>
+        <div class="form-text">Password: <code>12345</code> (mock)</div>
+      </div>
+
+      <button class="btn btn-primary w-100" [disabled]="f.invalid">Login</button>
+      <div class="text-danger mt-2" *ngIf="error">{{ error }}</div>
+    </form>
+  </div>
+</div>

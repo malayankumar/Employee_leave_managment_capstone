@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+<div class="card container" style="margin-top: 10px;">
+  <div class="card-body">
+    <h3 class="mb-3">New Leave Request</h3>
+
+    <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+    <div *ngIf="successMsg" class="alert alert-success">{{ successMsg }}</div>
+
+    <div class="mb-3">
+      <label class="form-label">Type</label>
+      <select class="form-select" [(ngModel)]="form.type" name="type" required>
+        <option value="MEDICAL">Medical</option>
+        <option value="SICK">Sick</option>
+        <option value="PRIVILEGED">Privileged</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Start</label>
+      <input type="date" class="form-control" [(ngModel)]="form.start" name="start" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">End</label>
+      <input type="date" class="form-control" [(ngModel)]="form.end" name="end" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Reason (optional)</label>
+      <textarea class="form-control" rows="3" [(ngModel)]="form.reason" name="reason"></textarea>
+    </div>
+
+    <button class="btn btn-success" [disabled]="submitting" (click)="submit()">
+      {{ submitting ? 'Submitting…' : 'Submit' }}
+    </button>
+  </div>
+</div>

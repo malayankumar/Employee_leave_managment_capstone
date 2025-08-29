@@ -1,0 +1,134 @@
+name: lms
+services:
+  mysql:
+    image: mysql:8
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: Password@1
+      MYSQL_DATABASE: lms_db
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-pPassword@1"]
+      interval: 5s
+      timeout: 3s
+      retries: 25
+    networks: [lms_net]
+
+  user_service:
+    build: ./lms-backend/user_service
+    restart: unless-stopped
+    environment:
+      DB_URL: mysql+pymysql://root:Password%401@mysql:3306/lms_db
+      JWT_SECRET: dev_secret
+      MANAGER_EMAIL: malayankumar@gmail.com
+      PYTHONUNBUFFERED: "1"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      # Returns non-zero unless /health responds 200
+      test: ["CMD", "python", "-c", "import urllib.request,sys; \
+r=urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=3); \
+sys.exit(0 if r.getcode()==200 else 1)"]
+      interval: 5s
+      timeout: 4s
+      retries: 20
+      start_period: 15s
+    networks: [lms_net]
+
+  leave_service:
+    build: ./lms-backend/leave_service
+    restart: unless-stopped
+    environment:
+      DB_URL: mysql+pymysql://root:Password%401@mysql:3306/lms_db
+      JWT_SECRET: dev_secret
+      USER_SVC_URL: http://user_service:5000
+      NOTIFY_URL: http://notification_service:5002
+      MANAGER_EMAIL: malayankumar@gmail.com
+      PYTHONUNBUFFERED: "1"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      user_service:
+        condition: service_healthy
+      notification_service:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; \
+r=urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=3); \
+sys.exit(0 if r.getcode()==200 else 1)"]
+      interval: 5s
+      timeout: 4s
+      retries: 20
+      start_period: 20s
+    networks: [lms_net]
+
+  notification_service:
+    build: ./lms-backend/notification_service
+    restart: unless-stopped
+    environment:
+      DRY_RUN: "false"                 # set to "true" to skip actual email send
+      SMTP_SERVER: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_USER: malayankumar@gmail.com
+      SMTP_PASS: "ywsm ccjp idgg qknq"
+      FROM_EMAIL: malayankumar@gmail.com
+      PYTHONUNBUFFERED: "1"
+    ports:
+      - "5002:5002"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; \
+r=urllib.request.urlopen('http://127.0.0.1:5002/health', timeout=3); \
+sys.exit(0 if r.getcode()==200 else 1)"]
+      interval: 5s
+      timeout: 4s
+      retries: 20
+      start_period: 10s
+    networks: [lms_net]
+
+  gateway:
+    build: ./lms-backend/gateway
+    restart: unless-stopped
+    environment:
+      USER_SVC_URL: http://user_service:5000
+      LEAVE_SVC_URL: http://leave_service:5000
+      PYTHONUNBUFFERED: "1"
+    ports:
+      - "8081:8080"   # API on http://localhost:8081
+    depends_on:
+      user_service:
+        condition: service_healthy
+      leave_service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; \
+r=urllib.request.urlopen('http://127.0.0.1:8080/api/health', timeout=3); \
+sys.exit(0 if r.getcode()==200 else 1)"]
+      interval: 5s
+      timeout: 4s
+      retries: 20
+      start_period: 10s
+    networks: [lms_net]
+
+  frontend:
+    build:
+      context: ./lms-frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "4200:80"     # Angular on http://localhost:4200
+      - "4201:80"     # Angular on http://localhost:4201
+    depends_on:
+      gateway:
+        condition: service_started
+    networks: [lms_net]
+
+volumes:
+  mysql_data:
+
+networks:
+  lms_net:
+    driver: bridge

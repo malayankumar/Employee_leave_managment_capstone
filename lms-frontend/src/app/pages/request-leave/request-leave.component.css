@@ -1,0 +1,4 @@
+/* .card { max-width: 100%; } */
+label { font-weight: 600; margin-bottom: .25rem; }
+.form-select, .form-control { border-radius: 10px; }
+button.btn { min-width: 120px; }
